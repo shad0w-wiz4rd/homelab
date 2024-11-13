@@ -1,0 +1,58 @@
+# https://pve.proxmox.com/wiki/Unprivileged_LXC_containers
+# unprivileged container: 1
+# nesting: 1
+
+proxmox shell: 
+# create one zfs dataset
+```zfs create zfsa/data```
+
+# use mkdir to create directories within that dataset
+mkdir /zfsa/data/{media,torrents}
+mkdir /zfsa/data/media/{books,cartoons,movies,movies-anime,music,tv,tv-anime}
+mkdir /zfsa/data/torrents/{books,cartoons,movies,movies-anime,music,tv,tv-anime}
+
+# pass through the proxmox zfs dataset with the directories to the container/virtual machine
+```nano /etc/pve/lxc/700.conf```
+*** *** *** *** *** *** *** *** *** ***
+mp0: /zfsa/data,mp=/mnt/data
+
+lxc.idmap = u 0 100000 1005
+lxc.idmap = g 0 100000 1005
+lxc.idmap = u 1005 1005 1
+lxc.idmap = g 1005 1005 1
+lxc.idmap = u 1006 101006 64530
+lxc.idmap = g 1006 101006 64530
+*** *** *** *** *** *** *** *** *** ***
+# grant permissions
+proxmox shell: chown -R 1005:1005 /zfsa/data
+
+# how it will appear in your CT/VM
+# /mnt/data
+# ├── torrents
+# │   ├── books
+# │   ├── cartoons
+# │   ├── movies
+# │   ├── movies-anime
+# │   ├── music
+# │   ├── tv
+# │   └── tv-anime
+# *** OPTIONAL - USENET DIR***
+# ├── usenet 
+# │   ├── incomplete
+# │   └── complete
+# │       ├── books
+# │       ├── cartoons
+# │       ├── movies
+# │       ├── movies-anime
+# │       ├── music
+# │       ├── tv
+# │       └── tv-anime
+# *** *** *** *** ***
+# └── media
+#     ├── books
+#     ├── cartoons
+#     ├── movies
+#     ├── movies-anime
+#     ├── music
+#     ├── tv
+#     └── tv-anime

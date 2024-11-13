@@ -1,0 +1,42 @@
+# docker network create starr-stack
+# docker volume create qbittorrent & docker volume create prowlarr & docker volume create readarr & docker volume create mylar3 & docker volume create radarr & docker volume create radarr-anime & docker volume create lidarr & docker volume create sonarr & docker volume create sonarr-anime
+# docker volume create jackett & docker volume create prowlarr & docker volume create readarr & docker volume create mylar3 & docker volume create radarr & docker volume create radarr-anime & docker volume create lidarr & docker volume create sonarr & docker volume create sonarr-anime
+
+# /var/lib/docker/volumes
+# ├── qbittorrent         # torrent-client
+# ├── prowlarr            # indexer-manager
+# ├── readarr             # media-indexer
+# ├── mylar3              # media-indexer
+# ├── radarr              # media-indexer
+# ├── radarr-anime        # media-indexer
+# ├── lidarr              # media-indexer
+# ├── sonarr              # media-indexer
+# ├── sonarr-anime        # media-indexer
+# ├── uunpackerr          # utlities
+# └── tdarr               # utlities
+
+# torrent-clients + proxy-managers- manages the download process, connecting to peers/seeders, and piecing together the complete files.
+# qbittorrent: # downloads: 100M+ last_week: <260,000
+# deluge: # downloads: 100M+ last_week: <55,000
+
+# index-aggregators: index of torrenting websites
+# jackett: # downloads; 1B+ last_week: <250,000
+# prowlarr: # downloads: 10M+ last_week: <150,000
+
+# download-managers search index-aggregators in order to fetch torrent files containing download instructions, then instruct torrent-clients to download the torrent file
+# readarr: #books  # downloads: 5M+   last_week: <55,000
+# mylar3:  #comics # downloads: 10M+  last_week: <9,500
+# radarr:  #movies # downloads: 1B+   last_week: <490,000
+# lidarr:  #music  # downloads: 500M+ last_week: <110,000
+# sonarr:  #tv     # downloads: 1B+   last_week: <420,000
+
+# utlities
+# unpacks compressed files whhen they finish downloading
+# unpackerr: # downloads: 10M+ last_week: <14,500
+########################################################################################################################
+# default bridge
+# needs external container access for p2p connections
+
+# qbittorrent client only need access to /mnt/data/torrents
+# username: admin
+# password: <Check Container Logs>

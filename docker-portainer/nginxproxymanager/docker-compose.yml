@@ -1,0 +1,32 @@
+# docker host:
+# docker network create nginxproxymanager
+# docker volume create nginxproxymanager
+# docker volume create letsencrypt
+
+# portainer web console (App Templates > Custom Templates):
+version: "3.8"
+
+networks:
+  nginxproxymanager:
+    external: true
+
+volumes: 
+  nginxproxymanager:
+    external: true
+  letsencrypt:
+    external: true
+
+services:
+  nginxproxymanager:
+    container_name: nginxproxymanager
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    networks:
+      - nginxproxymanager
+    ports:
+      - "40080:80"
+      - "443:443"
+      - "81:81"
+    volumes:
+      - nginxproxymanager:/data
+      - letsencrypt:/etc/letsencrypt

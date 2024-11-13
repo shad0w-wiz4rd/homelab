@@ -1,0 +1,174 @@
+version: "2.1"
+
+networks:
+  starr-stack:
+    external: true
+
+volumes: 
+  qbittorrent:
+    external: true
+  prowlarr:
+    external: true 
+  sonarr-anime:
+    external: true 
+  radarr-anime:
+    external: true 
+  sonarr:
+    external: true 
+  radarr:
+    external: true 
+  readarr:
+    external: true 
+  mylar3:
+    external: true 
+  lidarr:
+    external: true 
+
+services:
+  qbittorrent:
+    container_name: qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest #latest=stable
+    restart: unless-stopped
+    environment:
+      - PUID=1005
+      - PGID=1005
+      - TZ=America/Los_Angeles
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - qbittorrent:/config
+      - /mnt/data/torrents:/data/torrents
+    networks:
+      - starr-stack
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+########################################################################################################################
+  prowlarr:
+    container_name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:latest #latest=stable
+    restart: unless-stopped
+    environment:
+      - PUID=1005
+      - PGID=1005
+      - TZ=America/Los_Angeles
+    volumes:
+      - prowlarr:/config
+    networks:
+      - starr-stack
+    ports: 
+      - 9696:9696
+########################################################################################################################
+  sonarr-anime:
+    container_name: sonarr-anime
+    image: lscr.io/linuxserver/sonarr:latest #latest=stable
+    restart: unless-stopped
+    environment:
+      - PUID=1005
+      - PGID=1005
+      - TZ=America/Los_Angeles
+    volumes:
+      - sonarr-anime:/config
+      - /mnt/data:/data
+    networks:
+      - starr-stack
+    ports: 
+      - 8989:8989
+
+  radarr-anime:
+    container_name: radarr-anime
+    image: lscr.io/linuxserver/radarr:latest #latest=stable
+    restart: unless-stopped
+    environment:
+      - PUID=1005
+      - PGID=1005
+      - TZ=America/Los_Angeles
+    volumes:
+      - radarr-anime:/config
+      - /mnt/data:/data
+    networks:
+      - starr-stack
+    ports: 
+      - 7878:7878
+########################################################################################################################
+  sonarr:
+    container_name: sonarr
+    image: lscr.io/linuxserver/sonarr:latest #latest=stable
+    restart: unless-stopped
+    environment:
+      - PUID=1005
+      - PGID=1005
+      - TZ=America/Los_Angeles
+    volumes:
+      - sonarr:/config
+      - /mnt/data:/data
+    networks:
+      - starr-stack
+    ports: 
+      - 9898:8989
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:latest #latest=stable
+    restart: unless-stopped
+    environment:
+      - PUID=1005
+      - PGID=1005
+      - TZ=America/Los_Angeles
+    volumes:
+      - radarr:/config
+      - /mnt/data:/data
+    networks:
+      - starr-stack
+    ports: 
+      - 8787:7878
+
+  # readarr:
+  #   container_name: readarr
+  #   image: lscr.io/linuxserver/readarr:develop
+  #   restart: unless-stopped
+  #   environment:
+  #     - PUID=1005
+  #     - PGID=1005
+  #     - TZ=America/Los_Angeles
+  #   volumes:
+  #     - readarr:/config
+  #     - /mnt/data:/data
+  #   networks:
+  #     - starr-stack
+  #   ports:
+  #     - 8787:8787
+
+  # mylar3:
+  #   container_name: mylar3
+  #   image: lscr.io/linuxserver/mylar3:latest #laest=stable
+  #   restart: unless-stopped
+  #   environment:
+  #     - PUID=1005
+  #     - PGID=1005
+  #     - TZ=America/Los_Angeles
+  #   volumes:
+  #     - mylar3:/config
+  #     - /mnt/data:/data
+  #   networks:
+  #     - starr-stack
+  #   ports:
+  #     - 8090:8090
+  
+  # lidarr:
+  #   container_name: lidarr
+  #   image: lscr.io/linuxserver/lidarr:latest #latest=stable
+  #   restart: unless-stopped 
+  #   environment:
+  #     - PUID=1005
+  #     - PGID=1005
+  #     - TZ=America/Los_Angeles
+  #   volumes:
+  #     - lidarr:/config
+  #     - /mnt/data:/data
+  #   networks:
+  #     - starr-stack
+  #   ports:
+  #     - 8686:8686 
+########################################################################################################################
